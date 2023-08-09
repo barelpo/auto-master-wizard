@@ -52,6 +52,7 @@ class Favourite(models.Model):
 class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    img_url = models.CharField(max_length=1024, null=True)
 
     class Meta:
         db_table = 'profiles'
@@ -65,8 +66,30 @@ class Content(models.Model):
     content_type = models.CharField()
     source = models.CharField(max_length=256, null=True)
     url = models.CharField()
+    projects = models.ManyToManyField('Project', through='ProjectContent', related_name='project_contents')
 
     class Meta:
         db_table = 'contents'
+
+
+class Project(models.Model):
+
+    title = models.CharField()
+    user = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='projects')
+    contents = models.ManyToManyField('Content', through='ProjectContent', related_name='content_projects')
+
+    class Meta:
+        db_table = 'projects'
+
+
+class ProjectContent(models.Model):
+
+    project = models.ForeignKey('Project', on_delete=models.RESTRICT)
+    content = models.ForeignKey('Content', on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'project_contents'
+
+
 
 
