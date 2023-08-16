@@ -83,8 +83,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'auto_master_wizard',
         'USER': 'postgres',
-        'PASSWORD': 'omer270821',
-        'HOST': '127.0.0.1',
+        'PASSWORD': 'postgres',
+        'HOST': 'auto-master-wizard.cae8wpnoxdah.us-east-1.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
