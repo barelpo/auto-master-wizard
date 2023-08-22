@@ -74,6 +74,25 @@ def upload_profile_img_url(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+def upload_profile_img_done(request):
+    bucket_name = "auto-mater-wizard-profiles"
+    object_name = request.data['object_name']
+    old_url = request.user.profile.img_url
+
+    request.user.profile.img_url = f"https://{bucket_name}.s3.amazonaws.com/{object_name}"
+    request.user.profile.save()
+
+    s3 = boto3.client('s3')
+    if old_url:
+        old_object_name = old_url.split('/')[-1]
+        s3.delete_object(Bucket="auto-mater-wizard-profiles", Key=old_object_name)
+
+    ser = UserProfileSerializer(request.user)
+    return Response(data=ser.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def upload_profile_img(request):
     bucket_name = "auto-mater-wizard-profiles"
     file_stream = request.FILES['file'].file
