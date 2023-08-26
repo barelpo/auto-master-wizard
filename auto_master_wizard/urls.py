@@ -19,4 +19,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('api/users/', include('auto_master_wizard_app.users.urls')),
+    path('api/contents/', include('auto_master_wizard_app.contents.urls')),
 ]
